@@ -64,18 +64,21 @@ def count_accuracy(polarity, pos_words, neg_words):
 
 
 def main():
-  pos_words = extract_lexicon_words(sys.argv[1])
-  neg_words = extract_lexicon_words(sys.argv[2])
-  tokens_list = get_token_list(sys.argv[3])
+  if len(sys.argv) != 4:
+    print "Provide paths to positive lexicon file, negative lexicon file, and a corpus file!"
+  else:
+    pos_words = extract_lexicon_words(sys.argv[1])
+    neg_words = extract_lexicon_words(sys.argv[2])
+    tokens_list = get_token_list(sys.argv[3])
 
-  polarity_lexicon = count_polarity(count_cooccurence(tokens_list, neg_words + pos_words, "excellent", 5),
-                            count_cooccurence(tokens_list, neg_words + pos_words, "poor", 5),
-                            "excellent", "poor", tokens_list)
-    
-  # save dictionary as a pickle file
-  pickle.dump(polarity_lexicon, open( "lexicon.p", "wb")) 
-  print pickle.load(open("lexicon.p", "rb" ))
-  print "The polarity was predicted with accuracy " + str(count_accuracy(polarity_lexicon, pos_words, neg_words))
+    polarity_lexicon = count_polarity(count_cooccurence(tokens_list, neg_words + pos_words, "excellent", 5),
+                              count_cooccurence(tokens_list, neg_words + pos_words, "poor", 5),
+                              "excellent", "poor", tokens_list)
+      
+    # save dictionary as a pickle file
+    pickle.dump(polarity_lexicon, open( "lexicon.p", "wb")) 
+    print pickle.load(open("lexicon.p", "rb" ))
+    print "The polarity was predicted with accuracy " + str(count_accuracy(polarity_lexicon, pos_words, neg_words))
 
 
 if __name__ == '__main__':
